@@ -1,0 +1,145 @@
+<style>
+    .user-bar {
+        text-align: right;
+        margin-bottom: 20px;
+    }
+
+    .user-info {
+        display: inline-block;
+        position: relative;
+        font-size: 15px;
+        color: #2c3e50;
+        cursor: pointer;
+    }
+
+    .user-info .logout-link {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 5px 15px;
+        white-space: nowrap;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .user-info:hover .logout-link {
+        display: block;
+    }
+
+    .logout-link a {
+        color: red;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .logout-link a:hover {
+        text-decoration: underline;
+    }
+
+    .gallery-wrapper {
+        display: flex;
+        gap: 30px;
+        align-items: flex-start;
+    }
+
+    .selection-panel {
+        background-color: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        min-width: 220px;
+    }
+
+    .selection-panel h2 {
+        font-size: 18px;
+        margin-bottom: 15px;
+        color: #2c3e50;
+    }
+
+    .radio-group {
+        margin-bottom: 12px;
+    }
+
+    .radio-group input[type="radio"] {
+        margin-right: 8px;
+    }
+
+    .radio-group label {
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    .submit-btn {
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #2c3e50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .submit-btn:hover {
+        background-color: #34495e;
+    }
+
+    .image-panel {
+        flex: 1;
+        background-color: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .image-panel h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: #2c3e50;
+    }
+
+    .image-panel img {
+        max-width: 100%;
+        max-height: 500px;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="user-bar">
+    <div class="user-info">
+        {{username}}
+        <div class="logout-link">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+</div>
+
+<form method="get" action="/">
+    <div class="gallery-wrapper">
+
+        <div class="selection-panel">
+            <h2>Choose an Image</h2>
+
+            {{#each images}}
+            <div class="radio-group">
+                <input type="radio" name="image" id="img-{{@index}}" value="{{this.filename}}">
+                <label for="img-{{@index}}">{{this.label}}</label>
+            </div>
+            {{/each}}
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </div>
+
+        <div class="image-panel">
+            <h2>{{selectedLabel}}</h2>
+            <img src="/images/{{selectedImage}}" alt="{{selectedLabel}}">
+        </div>
+
+    </div>
+</form>

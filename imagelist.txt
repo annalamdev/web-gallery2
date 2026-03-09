@@ -1,0 +1,6 @@
+cat.jpg
+fuji-mountain.jpg
+golden-retriever.jpg
+sakura.jpeg
+snowboard.jpg
+strawberries.jpg
