@@ -19,12 +19,10 @@ if (!MONGODB_URI) {
     process.exit(1);
 }
 
-// Connect to MongoDB
 mongoose.connect(MONGODB_URI)
     .then(() => console.log("Connected to MongoDB"))
     .catch(err => console.error("MongoDB connection error:", err));
 
-// Handlebars setup with partials
 const Handlebars = require("handlebars");
 const { allowInsecurePrototypeAccess } = require("@handlebars/allow-prototype-access");
 
@@ -48,22 +46,18 @@ app.use(clientSessions({
 
 const users = JSON.parse(fs.readFileSync(path.join(__dirname, "user.json"), "utf8"));
 
-// Mount the order router (Express.Router)
 app.use("/order", orderRouter);
 
-// Helper to build label from filename
 function buildLabel(filename) {
     return filename.substring(0, filename.lastIndexOf("."));
 }
 
-// Home / Gallery page
 app.get("/", async function (req, res) {
     if (!req.session.username) {
         return res.render("login", { errorMessage: null });
     }
 
     try {
-        // Only show available (status "A") images
         const docs = await Gallery.find({ status: "A" });
 
         const selectedImage = req.query.image || "default.jpg";
@@ -75,7 +69,6 @@ app.get("/", async function (req, res) {
             if (found) {
                 selectedLabel = buildLabel(found.filename);
             } else {
-                // try to find even if sold (e.g. cancel just happened on a now-sold one)
                 const any = await Gallery.findOne({ filename: selectedImage });
                 if (any) selectedLabel = buildLabel(any.filename);
             }
@@ -100,7 +93,6 @@ app.get("/", async function (req, res) {
     }
 });
 
-// Login submission
 app.post("/", async function (req, res) {
     const username = req.body.username;
     const password = req.body.password;
@@ -113,7 +105,6 @@ app.post("/", async function (req, res) {
     }
 
     try {
-        // On successful login, reset all images to Available ("A")
         await Gallery.updateMany({}, { $set: { status: "A" } });
         req.session.username = username;
         res.redirect("/");
