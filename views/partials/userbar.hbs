@@ -1,0 +1,51 @@
+<style>
+    .user-bar {
+        text-align: right;
+        margin-bottom: 20px;
+    }
+
+    .user-info {
+        display: inline-block;
+        position: relative;
+        font-size: 15px;
+        color: #2c3e50;
+        cursor: pointer;
+    }
+
+    .user-info .logout-link {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 5px 15px;
+        white-space: nowrap;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        z-index: 10;
+    }
+
+    .user-info:hover .logout-link {
+        display: block;
+    }
+
+    .logout-link a {
+        color: red;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .logout-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="user-bar">
+    <div class="user-info">
+        {{username}}
+        <div class="logout-link">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+</div>

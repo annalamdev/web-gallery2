@@ -1,44 +1,4 @@
 <style>
-    .user-bar {
-        text-align: right;
-        margin-bottom: 20px;
-    }
-
-    .user-info {
-        display: inline-block;
-        position: relative;
-        font-size: 15px;
-        color: #2c3e50;
-        cursor: pointer;
-    }
-
-    .user-info .logout-link {
-        display: none;
-        position: absolute;
-        right: 0;
-        top: 100%;
-        background-color: white;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 5px 15px;
-        white-space: nowrap;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .user-info:hover .logout-link {
-        display: block;
-    }
-
-    .logout-link a {
-        color: red;
-        text-decoration: none;
-        font-size: 14px;
-    }
-
-    .logout-link a:hover {
-        text-decoration: underline;
-    }
-
     .gallery-wrapper {
         display: flex;
         gap: 30px;
@@ -50,7 +10,7 @@
         border-radius: 8px;
         padding: 20px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        min-width: 220px;
+        min-width: 240px;
     }
 
     .selection-panel h2 {
@@ -59,23 +19,18 @@
         color: #2c3e50;
     }
 
-    .radio-group {
-        margin-bottom: 12px;
-    }
-
-    .radio-group input[type="radio"] {
-        margin-right: 8px;
-    }
-
-    .radio-group label {
-        cursor: pointer;
+    .selection-panel select {
+        width: 100%;
+        padding: 10px;
         font-size: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 15px;
     }
 
     .submit-btn {
         display: block;
         width: 100%;
-        margin-top: 20px;
         padding: 10px;
         background-color: #2c3e50;
         color: white;
@@ -108,17 +63,17 @@
         max-width: 100%;
         max-height: 500px;
         border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .image-panel .hint {
+        margin-top: 10px;
+        font-size: 13px;
+        color: #888;
     }
 </style>
 
-<div class="user-bar">
-    <div class="user-info">
-        {{username}}
-        <div class="logout-link">
-            <a href="/logout">Logout</a>
-        </div>
-    </div>
-</div>
+{{> userbar }}
 
 <form method="get" action="/">
     <div class="gallery-wrapper">
@@ -126,20 +81,28 @@
         <div class="selection-panel">
             <h2>Choose an Image</h2>
 
-            {{#each images}}
-            <div class="radio-group">
-                <input type="radio" name="image" id="img-{{@index}}" value="{{this.filename}}">
-                <label for="img-{{@index}}">{{this.label}}</label>
-            </div>
-            {{/each}}
+            <select name="image">
+                <option value="default.jpg">-- Select an image --</option>
+                {{#each images}}
+                <option value="{{this.filename}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+                {{/each}}
+            </select>
 
             <button type="submit" class="submit-btn">Submit</button>
         </div>
 
         <div class="image-panel">
             <h2>{{selectedLabel}}</h2>
-            <img src="/images/{{selectedImage}}" alt="{{selectedLabel}}">
+            {{#if isDefault}}
+                <img src="/images/{{selectedImage}}" alt="{{selectedLabel}}">
+            {{else}}
+                <a href="/order?image={{selectedImage}}">
+                    <img src="/images/{{selectedImage}}" alt="{{selectedLabel}}">
+                </a>
+                <p class="hint">Click the image to order &amp; purchase</p>
+            {{/if}}
         </div>
 
     </div>
 </form>
+
